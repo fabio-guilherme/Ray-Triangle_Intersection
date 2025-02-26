@@ -30,4 +30,73 @@
 *.exe
 *.out
 *.app
-Lec02_Ray-Triangle_Intersection.xcodeproj/project.xcworkspace/xcuserdata/fabioguilherme.xcuserdatad/UserInterfaceState.xcuserstate
+
+# Xcode-specific files
+## Xcode project files
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+## Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+## Xcode build artifacts
+build/
+DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# Visual Studio-specific files
+## User-specific settings
+*.vcxproj.user
+*.suo
+*.user
+*.vcxproj.filters
+*.vcxproj.in*
+*.vspx
+*.vsidx
+## Build folders
+x64/
+Debug/
+Release/
+*.pdb
+*.ilk
+*.idb
+*.ipdb
+*.iobj
+*.tlog
+*.log
+*.obj
+*.pch
+*.cache
+*.ncb
+*.sdf
+*.opensdf
+## MSBuild files
+*.msbuild
+*.msbuild.user
+## Visual Studio Code files
+.vscode/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+*.cmake
+
+# macOS-specific files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows-specific files
+Thumbs.db
+Desktop.ini
