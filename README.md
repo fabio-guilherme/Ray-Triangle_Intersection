@@ -6,14 +6,16 @@ This project demonstrates the mathematical concept of ray-triangle intersection,
 
 The project includes implementations for both **Mac (Xcode)** and **Windows (Visual Studio 2022)**:
 
-/Ray-Triangle_Intersection 
-|── /mac # Xcode project setup
+## Project Structure  
+
+```/Ray-Triangle_Intersection 
+│── /mac # Xcode project setup
 │── /windows # Visual Studio 2022 setup 
 │ ├── /lib # Contains required DLLs and libraries for Windows 
 │ ├── /Lec02_Ray-Triangle_Intersection # Windows project files 
 │── README.md # This file 
 │── .gitattributes # Ensure consistent handling of line endings and file formats across different operating systems  
-│── .gitignore # Ignore unnecessary build files
+│── .gitignore # Ignore unnecessary build files```
 
 ## Dependencies
 
