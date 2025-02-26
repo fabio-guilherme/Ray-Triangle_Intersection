@@ -50,6 +50,8 @@ DerivedData/
 *.perspectivev3
 
 # Visual Studio-specific files
+## Visual Studio 2022 folder
+.vs/
 ## User-specific settings
 *.vcxproj.user
 *.suo
