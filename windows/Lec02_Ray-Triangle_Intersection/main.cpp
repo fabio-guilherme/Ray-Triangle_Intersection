@@ -23,18 +23,22 @@ bool RayIntersectsTriangle(Vector3D rayOrigin,
     Vector3D edge1 = vertex1 - vertex0;
     Vector3D edge2 = vertex2 - vertex0;
     Vector3D h = rayVector.crossProduct(edge2);
+    
     a = edge1.dotProduct(h);
     if (a > -EPSILON && a < EPSILON)
         return false;    // This ray is parallel to this triangle.
+    
     f = 1.0 / a;
     Vector3D s = rayOrigin - vertex0;
     u = f * s.dotProduct(h);
     if (u < 0.0 || u > 1.0)
         return false;
+    
     Vector3D q = s.crossProduct(edge1);
     v = f * rayVector.dotProduct(q);
     if (v < 0.0 || u + v > 1.0)
         return false;
+    
     // At this stage we can compute t to find out where the intersection point is on the line.
     float t = f * edge2.dotProduct(q);
     if (t > EPSILON) // ray intersection
