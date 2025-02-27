@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <GL/freeglut.h>
 #include "Triangle.hpp"
 #include "Vector3D.hpp"
@@ -50,42 +51,96 @@ bool RayIntersectsTriangle(Vector3D rayOrigin,
         return false;
 }
 
+void checkIntersection()
+{
+    std::cout << "\nCurrent ray origin: (" << rayOrigin.getX() << ", "
+        << rayOrigin.getY() << ", " << rayOrigin.getZ() << ")" << std::endl;
+    std::cout << "Current ray direction: (" << rayVector.getX() << ", "
+        << rayVector.getY() << ", " << rayVector.getZ() << ")" << std::endl;
+
+    // Call function
+    intersects = RayIntersectsTriangle(rayOrigin, rayVector, triangle, intersectionPoint);
+    if (intersects)
+    {
+        std::cout << "Intersection point: (" << intersectionPoint.getX() << ", "
+            << intersectionPoint.getY() << ", " << intersectionPoint.getZ() << ")" << std::endl;
+    }
+    else
+    {
+        std::cout << "No intersection" << std::endl;
+    }
+
+    std::cout << "\nPress 'r' to read new values or 'q' to quit ";
+}
+
 void display()
 {
+    // Clear the color and depth buffers
     glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Triangle
+    // Draw the triangle
     glBegin(GL_TRIANGLES);
-    glColor3f(0.0, 0.0, 1.0);
+    glColor3f(0.0, 0.0, 1.0); // Blue
     glVertex3f(triangle->vertex0.getX(), triangle->vertex0.getY(), triangle->vertex0.getZ());
     glVertex3f(triangle->vertex1.getX(), triangle->vertex1.getY(), triangle->vertex1.getZ());
     glVertex3f(triangle->vertex2.getX(), triangle->vertex2.getY(), triangle->vertex2.getZ());
     glEnd();
 
-    // Set the line width to 3 pixels
-    glLineWidth(2.0);
-
-    // Ray
-    Vector3D rayEnd = rayOrigin + rayVector * 100;
+    // Draw the ray
+    glLineWidth(3.0); // Thicker line
     glBegin(GL_LINES);
-    glColor3f(0.0, 1.0, 0.0);
+    glColor3f(0.0, 1.0, 0.0); // Green
     glVertex3f(rayOrigin.getX(), rayOrigin.getY(), rayOrigin.getZ());
-    //glVertex3f(rayEnd.getX(), rayEnd.getY(), rayEnd.getZ());
-    glVertex3f(rayOrigin.getX() + rayVector.getX(), rayOrigin.getY() + rayVector.getY(), rayOrigin.getZ() + rayVector.getZ());
+    Vector3D rayEnd = rayOrigin + rayVector * 100; // Extend the ray
+    glVertex3f(rayEnd.getX(), rayEnd.getY(), rayEnd.getZ());
     glEnd();
 
+    // Draw the intersection point (if any)
+    glPointSize(5.0); // Increase point size
+    glDisable(GL_DEPTH_TEST); // Disable depth testing
     glBegin(GL_POINTS);
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(rayOrigin.getX(), rayOrigin.getY(), rayOrigin.getZ());
+    glColor3f(1.0, 0.0, 0.0); // Red
     if (intersects)
     {
-        glColor3f(0.0, 0.0, 0.0);
         glVertex3f(intersectionPoint.getX(), intersectionPoint.getY(), intersectionPoint.getZ());
     }
     glEnd();
+    glEnable(GL_DEPTH_TEST); // Re-enable depth testing
 
+    // Flush the OpenGL pipeline
     glFlush();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+    if (key == 'r') // Ask for new values
+    {
+        float x, y, z;
+
+        std::cout << "\nEnter new ray origin (x y z): ";
+        std::cin >> x >> y >> z;
+        rayOrigin.setX(x);
+        rayOrigin.setY(y);
+        rayOrigin.setZ(z);
+
+        std::cout << "Enter new ray direction (x y z): ";
+        std::cin >> x >> y >> z;
+        rayVector.setX(x);
+        rayVector.setY(y);
+        rayVector.setZ(z);
+        rayVector.normalize();
+
+        // Perform intersection test with new values
+        checkIntersection();
+
+        // Redraw the scene
+        glutPostRedisplay();
+    }
+    else if (key == 'q') // Exit the program
+    {
+        exit(0);
+    }
 }
 
 int main(int argc, char** argv)
@@ -101,24 +156,24 @@ int main(int argc, char** argv)
     rayVector = Vector3D(0.5, 0.5, -1.0);
     rayVector.normalize();
 
-    // Call function
-    intersects = RayIntersectsTriangle(rayOrigin, rayVector, triangle, intersectionPoint);
-    if (intersects)
-    {
-        std::cout << "Intersection point: (" << intersectionPoint.getX() << ", " << intersectionPoint.getY() << ", " << intersectionPoint.getZ() << ")" << std::endl;
-    }
-    else
-    {
-        std::cout << "No intersection" << std::endl;
-    }
+    // Perform intersection test with initial values
+    checkIntersection();
 
-    // Draw elements
+    // Initialize OpenGL
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH); // Enable depth buffer
     glutInitWindowSize(600, 600);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Triangle");
+
+    // Enable depth testing
+    glEnable(GL_DEPTH_TEST);
+
+    // Register callbacks
     glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard); // Capture keyboard input
+
+    // Start OpenGL main loop
     glutMainLoop();
 
     // Clean up

@@ -21,6 +21,21 @@ float Vector3D::getZ() const
     return z_;
 }
 
+void Vector3D::setX(float x) 
+{ 
+    x_ = x; 
+}
+
+void Vector3D::setY(float y) 
+{ 
+    y_ = y; 
+}
+
+void Vector3D::setZ(float z) 
+{ 
+    z_ = z; 
+}
+
 float Vector3D::length() const
 {
     return sqrt(x_ * x_ + y_ * y_ + z_ * z_);
